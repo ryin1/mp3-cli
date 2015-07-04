@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from clint.textui import progress
+from clint.textui import puts, colored, progress
 
 import requests
 import os
@@ -14,7 +14,7 @@ def format(s):
 
 
 def download_file(url, filename):
-	print('DOWNLOADING {}'.format(url))
+	print('DOWNLOADING {}'.format(filename))
 	r_dl = requests.get(url, stream=True)
 	with open(filename, 'wb') as f:
 		total_length = int(r_dl.headers['content-length'])
@@ -43,24 +43,26 @@ for i, v in enumerate(lis, 1):
     options[i] = (artist, title, dl_link)
 
 for k, v in options.items():
-    print('\t{}: {}{}'.format(k, v[0], v[1]))
+    puts(colored.green('\t{}: {}{}'.format(k, v[0], v[1])))
 
 opt = 'N'
 while opt != 'Y':
 	choice = int(input('Enter index of song: '))
 	chosen_link = options[choice][2]
 	size = 0.000165
-	print(options[choice])
 	while size == 0.000165:
 		r = requests.head(chosen_link)
 		size = int(r.headers['content-length'])/1000000
-	opt = input('The file is {} MB. Proceed (Y/N)? '.format(size))
+	puts(colored.cyan('The file is {} MB. Proceed (Y/N)?'.format(size)))
+	opt = input('> ')
 
 filename_search = re.search('track/.*/(.*.mp3)', chosen_link)
 if filename_search:
 	default_name = filename_search.group(1)
 
-file_name = input('Name your file: [{}]'.format(default_name))
+puts(colored.cyan('Name your file ({}):'.format(default_name)))
+
+file_name = input('> ')
 file_name = file_name or default_name
 
 download_file(chosen_link, file_name)
