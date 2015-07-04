@@ -15,4 +15,4 @@ CLI for downloading mp3s online conveniently.
 `git clone https://github.com/ryin1/cli-mp3.git`
 
 # Usage
-`python music_downloader.py [SEARCH TERM]`
+`python dl.py [SEARCH TERM]`
