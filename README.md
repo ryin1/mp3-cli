@@ -5,6 +5,7 @@ Command line interface for downloading mp3s online conveniently. Runs on Python 
 * Search through large music database
 * File-size preview before download
 * Download progress bar
+* ID3 metadata modification
 
 # Dependencies
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
