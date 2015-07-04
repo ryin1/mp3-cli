@@ -5,7 +5,6 @@ import requests
 import os
 import sys
 import code
-import urllib.request
 import re
 
 
@@ -14,18 +13,18 @@ def format(s):
 
 
 def download_file(url, filename):
-	print('DOWNLOADING {}'.format(filename))
-	r_dl = requests.get(url, stream=True)
-	with open(filename, 'wb') as f:
-		total_length = int(r_dl.headers['content-length'])
-		for chunk in progress.bar(r_dl.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
-			if chunk:
-				f.write(chunk)
-				f.flush()
+    print('DOWNLOADING {}'.format(filename))
+    r_dl = requests.get(url, stream=True)
+    with open(filename, 'wb') as f:
+        total_length = int(r_dl.headers['content-length'])
+        for chunk in progress.bar(r_dl.iter_content(chunk_size=1024), expected_size=(total_length / 1024) + 1):
+            if chunk:
+                f.write(chunk)
+                f.flush()
 
 if len(sys.argv) < 2:
-	print('Usage: python3 music_downloader.py [SEARCH TERM]')
-	sys.exit()
+    print('Usage: python dl.py [SEARCH TERM]')
+    sys.exit()
 
 query = ' '.join(sys.argv[1:])
 
@@ -47,22 +46,22 @@ for k, v in options.items():
 
 opt = 'N'
 while opt != 'Y':
-	choice = int(input('Enter index of song: '))
-	chosen_link = options[choice][2]
-	size = 0.000165
-	while size == 0.000165:
-		r = requests.head(chosen_link)
-		size = int(r.headers['content-length'])/1000000
-	puts(colored.cyan('The file is {} MB. Proceed (Y/N)?'.format(size)))
-	opt = input('> ')
+    choice = int(raw_input('Enter index of song: '))
+    chosen_link = options[choice][2]
+    size = 0.000165
+    while size == 0.000165:
+        r = requests.head(chosen_link)
+        size = int(r.headers['content-length']) / 1000000
+    puts(colored.cyan('The file is {} MB. Proceed (Y/N)?'.format(size)))
+    opt = raw_input('> ')
 
 filename_search = re.search('track/.*/(.*.mp3)', chosen_link)
 if filename_search:
-	default_name = filename_search.group(1)
+    default_name = filename_search.group(1)
 
 puts(colored.cyan('Name your file ({}):'.format(default_name)))
 
-file_name = input('> ')
+file_name = raw_input('> ')
 file_name = file_name or default_name
 
 download_file(chosen_link, file_name)
