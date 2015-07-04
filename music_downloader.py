@@ -1,20 +1,35 @@
 from bs4 import BeautifulSoup
-from contextlib import closing
-from selenium import webdriver # pip install selenium
-# from selenium.webdriver.support.ui import WebDriverWait
+from clint.textui import progress
 
 import requests
 import os
 import sys
+import code
+import urllib.request
+import re
 
 
 def format(s):
     return s.lower().replace(' ', '_')
 
-query = ' '.join(sys.argv[1:])
-print(query)
 
-url = 'http://www.junglevibe.net/tracks/{}.html'.format(format(query))
+def download_file(url, filename):
+	print('DOWNLOADING {}'.format(url))
+	r_dl = requests.get(url, stream=True)
+	with open(filename, 'wb') as f:
+		total_length = int(r_dl.headers['content-length'])
+		for chunk in progress.bar(r_dl.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
+			if chunk:
+				f.write(chunk)
+				f.flush()
+
+if len(sys.argv) < 2:
+	print('Usage: python3 music_downloader.py [SEARCH TERM]')
+	sys.exit()
+
+query = ' '.join(sys.argv[1:])
+
+url = 'http://www.vibeclouds.net/tracks/{}.html'.format(format(query))
 
 r = requests.get(url)
 html = BeautifulSoup(r.text)
@@ -22,26 +37,30 @@ ul = html.find('ul', class_='results')
 lis = ul.find_all('li')
 options = {}
 for i, v in enumerate(lis, 1):
-	artist = v.find('a', rel='nofollow').text.strip()
-	title = v.find('span', class_='songName').text
-	dl_link = v.find('p', class_='downloadButton').get('onclick').replace('location.href=\'', '')
-	options[i] = (artist, title, dl_link)
+    artist = v.find('a', rel='nofollow').text.strip()
+    title = v.find('span', class_='songName').text
+    dl_link = v.find('p', class_='downloadButton').get('onclick').replace('location.href=', '').replace("'", '')
+    options[i] = (artist, title, dl_link)
 
 for k, v in options.items():
-    print('{}: {}{}'.format(k, v[0], v[1]))
+    print('\t{}: {}{}'.format(k, v[0], v[1]))
 
-choice = int(input('Enter index of song: '))
-# choice = 7
-chosen_link = options[i][2]
+opt = 'N'
+while opt != 'Y':
+	choice = int(input('Enter index of song: '))
+	chosen_link = options[choice][2]
+	size = 0.000165
+	print(options[choice])
+	while size == 0.000165:
+		r = requests.head(chosen_link)
+		size = int(r.headers['content-length'])/1000000
+	opt = input('The file is {} MB. Proceed (Y/N)? '.format(size))
 
-# To prevent download dialog
-profile = webdriver.FirefoxProfile()
-profile.set_preference('browser.download.folderList', 2) # custom location
-profile.set_preference('browser.download.manager.showWhenStarting', False)
-profile.set_preference('browser.download.dir', '/tmp')
-profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'text/csv')
+filename_search = re.search('track/.*/(.*.mp3)', chosen_link)
+if filename_search:
+	default_name = filename_search.group(1)
 
-browser = webdriver.Firefox(profile)
-browser.get(chosen_link)
+file_name = input('Name your file: [{}]'.format(default_name))
+file_name = file_name or default_name
 
-# browser.find_element_by_id('button button-icon big green colored ').click()
+download_file(chosen_link, file_name)
