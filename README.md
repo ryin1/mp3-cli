@@ -1,5 +1,5 @@
 # cli-mp3
-CLI for downloading mp3s online conveniently.
+Command line interface for downloading mp3s online conveniently. Runs on Python 3.
 
 # Features
 * Search through large music database
@@ -7,9 +7,9 @@ CLI for downloading mp3s online conveniently.
 * Download progress bar
 
 # Dependencies
-* [Python 2.7](https://www.python.org/download/releases/2.7/)
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 * [Clint](https://pypi.python.org/pypi/clint/)
+* [Mutagen](https://mutagen.readthedocs.org/en/latest/)
 
 # Installation
 `git clone https://github.com/ryin1/cli-mp3.git`
