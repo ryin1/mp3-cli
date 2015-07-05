@@ -1,4 +1,4 @@
-# cli-mp3
+# mp3-cli
 Command line interface for downloading mp3s online conveniently. Runs on Python 3.
 
 # Features
@@ -13,7 +13,7 @@ Command line interface for downloading mp3s online conveniently. Runs on Python 
 * [Mutagen](https://mutagen.readthedocs.org/en/latest/)
 
 # Installation
-`git clone https://github.com/ryin1/cli-mp3.git`
+`git clone https://github.com/ryin1/mp3-cli.git`
 
 # Usage
 `python dl.py [SEARCH TERM]`
