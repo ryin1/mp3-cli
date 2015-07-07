@@ -14,9 +14,11 @@ Command line interface for downloading mp3s online conveniently. Runs on Python 
 * [Requests](http://docs.python-requests.org/en/latest/)
 
 # Installation
-`git clone https://github.com/ryin1/mp3-cli.git`
-`cd mp3-cli`
-`pip3 install -r requirements.txt`
+```bash
+git clone https://github.com/ryin1/mp3-cli.git
+cd mp3-cli
+pip3 install -r requirements.txt
+```
 
 # Usage
 `python3 dl.py [SEARCH TERM]`
