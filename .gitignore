@@ -1,0 +1,5 @@
+# Ignore Python ByteCode 
+*.pyc 
+
+# Ignore Python Environments 
+env/*
