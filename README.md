@@ -11,9 +11,12 @@ Command line interface for downloading mp3s online conveniently. Runs on Python 
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 * [Clint](https://pypi.python.org/pypi/clint/)
 * [Mutagen](https://mutagen.readthedocs.org/en/latest/)
+* [Requests](http://docs.python-requests.org/en/latest/)
 
 # Installation
 `git clone https://github.com/ryin1/mp3-cli.git`
+`cd mp3-cli`
+`pip3 install -r requirements.txt`
 
 # Usage
 `python3 dl.py [SEARCH TERM]`
